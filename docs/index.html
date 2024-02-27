@@ -3,12 +3,28 @@
 <head>
 <title>CURAM Sample Page</title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
+
+#signup-form {
+    margin-top: 50px;
+}
+
+#signup-form input[type="text"], #signup-form input[type="email"] {
+    border: 0;
+    display: block;
+    border-bottom: 1px solid #777;
+    box-shadow: none;
+    margin: 50px auto;
+    color: #1583cc;
+    font-size: 25px;
+}
+
+
 </style>
 </head>
 <body>
@@ -103,6 +119,15 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
       <h4><b>TBD</b></h4>
       <h6><i>TBD</i></h6>
       <p>Add Firebase Code</p>
+      <form id=signup-form>
+        <input type="text", id="name", placeholder="Enter your name!!">
+        <input type="email", id="email", placeholder="Email">
+        <!-- //<input type="submit", id="submit", class="button", value="Get Started!"> -->
+         <button type="submit" class="register" id="submit"
+                style="margin-left: 15px; margin-top: 10px">
+                Submit
+            </button>
+      </form>
     </div>
   </div>
   <hr>
@@ -157,5 +182,62 @@ function w3_close() {
 }
 </script>
 
+<!-- <script src=
+"https://www.gstatic.com/firebasejs/10.8.0/firebase.js">
+    </script> -->
+
+<script type="module">
+  // https://firebase.google.com/docs/web/setup#available-libraries
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+   import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  let firebaseConfig = {
+    apiKey: "AIzaSyATYcx0Py5RZ8kZ4uwSIIfkLxpGNtMLESY",
+  authDomain: "curamnewsletterbase.firebaseapp.com",
+  databaseURL: "https://curamnewsletterbase-default-rtdb.firebaseio.com",
+  projectId: "curamnewsletterbase",
+  storageBucket: "curamnewsletterbase.appspot.com",
+  messagingSenderId: "13980681119",
+  appId: "1:13980681119:web:372f86ea2810b5515b33aa",
+  measurementId: "G-SJ174HXFQ0"
+  };
+
+   const app = initializeApp(firebaseConfig);
+   const database = getDatabase(app);
+  // var database = firebase.database();
+  const messagesRef = ref(database, 'Collected Data');
+
+
+  // Form submission handler
+  document.getElementById('signup-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Get form values
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+
+    // Save message to Firebase
+    saveMessage(name, email);
+
+    // Reset form
+    document.getElementById('signup-form').reset();
+  });
+ 
+        // Save message to firebase
+        function saveMessage(name, email) {
+            const newMessageRef = push(messagesRef);
+             set(newMessageRef, {
+        name: name,
+        email: email,
+    });
+        }
+
+</script>
+
 </body>
 </html>
+
+
